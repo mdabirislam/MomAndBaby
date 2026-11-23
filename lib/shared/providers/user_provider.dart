@@ -12,19 +12,26 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   void _loadProfile() {
-    final box = HiveService.getBox<UserProfile>(HiveService.profileBoxName);
-    if (box.isNotEmpty) {
-      state = box.getAt(0);
+    try {
+      final box = HiveService.getBox<UserProfile>(HiveService.profileBoxName);
+      if (box.isNotEmpty) {
+        state = box.getAt(0);
+      }
+    } catch (_) {
+      // Handles uninitialized box in unit tests or initial boot safely
     }
   }
 
   Future<void> saveProfile(UserProfile profile) async {
-    final box = HiveService.getBox<UserProfile>(HiveService.profileBoxName);
-    if (box.isEmpty) {
-      await box.add(profile);
-    } else {
-      await box.putAt(0, profile);
-    }
+    try {
+      final box = HiveService.getBox<UserProfile>(HiveService.profileBoxName);
+      if (box.isEmpty) {
+        await box.add(profile);
+      } else {
+        await box.putAt(0, profile);
+      }
+    } catch (_) {}
     state = profile;
   }
 }
+

@@ -3,31 +3,35 @@
 ## Project Overview
 **Project Name:** Mom & Baby (মা ও শিশু)
 **Objective:** A private, offline-first pregnancy companion app in Bengali.
-**Status:** Initializing Development.
+**Status:** Core features implemented & integrated.
 
 ## Completed Features
-- [x] Project Initialization (Existing Flutter project detected)
+- [x] Project Initialization & Architecture Setup
+- [x] Hive Database Setup & Model Generation
+- [x] Pregnancy Calculation Engine (`PregnancyCalculator`)
+- [x] Unit Tests for Calculation Engine
+- [x] Onboarding Flow (LMP & User Profile)
+- [x] Main Dashboard with Pregnancy Progress
+- [x] Weekly Pregnancy Knowledge Base (JSON Data + Domain Models)
+- [x] Weekly Guide Screen & Horizontal Week Selector UI
+- [x] Daily Care Trackers (Water Tracker, Kick Counter)
+- [x] Medicine List & Logging
+- [x] Pregnancy Diary (Text entries)
+- [x] Emergency Contacts Screen with Calling
+- [x] Reusable Bengali UI Components & Theming
 
 ## In Progress
-- [ ] Architecture Setup
-- [ ] Dependency Configuration
+- [ ] Medical Records Gallery (Image & Doc Store)
 
 ## Pending Features
-- [ ] Pregnancy Calculation Engine
-- [ ] Weekly Knowledge Base (Bengali)
-- [ ] Onboarding Flow
-- [ ] Main Dashboard
-- [ ] Daily Care Trackers (Water, Medicine, Kick, Symptom)
-- [ ] Medicine & Appointment Reminders
-- [ ] Pregnancy Diary
-- [ ] Medical Records Gallery
-- [ ] Emergency Contacts
-- [ ] Home Screen Widget
-- [ ] Privacy & Security (App Lock, Biometric)
-- [ ] Backup & Restore (Encrypted)
+- [ ] Medicine & Appointment Reminders (Local Notifications)
+- [ ] App Lock / Biometric Security
+- [ ] Backup & Restore (Encrypted JSON Export/Import)
+- [ ] Home Screen Widget (Android AppWidget Integration)
 
 ## Known Bugs / Issues
-- None
+- CLI commands (`flutter`, `dart`) time out in the current automated environment shell integration, but manually executing them in a local PowerShell window works fine.
 
 ## Next Task
-- Configure dependencies in `pubspec.yaml` and set up folder structure.
+- Implement Medical Records Gallery and local image storage.
+

@@ -3,16 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/dashboard/presentation/dashboard_screen.dart';
-import 'core/database/hive_service.dart';
-import 'shared/models/user_profile.dart';
+import 'shared/providers/user_provider.dart';
 
 class MomAndBabyApp extends ConsumerWidget {
   const MomAndBabyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profileBox = HiveService.getBox<UserProfile>(HiveService.profileBoxName);
-    final hasProfile = profileBox.isNotEmpty;
+    final profile = ref.watch(userProfileProvider);
+    final hasProfile = profile != null;
 
     return MaterialApp(
       title: 'Mom & Baby',
@@ -22,3 +21,4 @@ class MomAndBabyApp extends ConsumerWidget {
     );
   }
 }
+

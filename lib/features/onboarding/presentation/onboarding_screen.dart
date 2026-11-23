@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../shared/models/user_profile.dart';
 import '../../../shared/providers/user_provider.dart';
 import '../../../core/constants/colors.dart';
+import '../../dashboard/presentation/dashboard_screen.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -43,13 +44,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     }
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState!.validate() && _selectedLmp != null) {
       final profile = UserProfile(
         name: _nameController.text,
         lmp: _selectedLmp!,
       );
-      ref.read(userProfileProvider.notifier).saveProfile(profile);
+      await ref.read(userProfileProvider.notifier).saveProfile(profile);
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const DashboardScreen()),
+        );
+      }
     } else if (_selectedLmp == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('অনুগ্রহ করে শেষ মাসিকের তারিখ নির্বাচন করুন')),

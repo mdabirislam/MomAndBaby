@@ -4,7 +4,7 @@
 - **Pattern:** Clean Feature-First Architecture.
 - **State Management:** Riverpod.
 - **Database:** Hive (Local, offline-first).
-- **UI:** Flutter with Bengali typography (Hind Siliguri, Noto Sans Bengali).
+- **UI:** Flutter with Bengali typography (Hind Siliguri via Google Fonts).
 
 ## Folder Structure
 ```
@@ -16,49 +16,55 @@ lib/
     theme/
     utils/
     services/
+      pregnancy_calculator.dart
     database/
-    notifications/
-    widgets/
+      hive_service.dart
   features/
     onboarding/
+      presentation/
+        onboarding_screen.dart
     dashboard/
-    pregnancy/
+      presentation/
+        dashboard_screen.dart
+      providers/
+        dashboard_providers.dart
+      widgets/
+        dashboard_card.dart
     weekly_guide/
-    daily_care/
-    medicines/
-    appointments/
-    diary/
-    medical_records/
-    emergency/
-    settings/
+      domain/
+        pregnancy_week.dart
+      data/
+        weekly_guide_repository.dart
+      providers/
+        weekly_guide_providers.dart
+      presentation/
+        weekly_guide_screen.dart
+        weekly_guide_selector.dart
   shared/
     models/
+      user_profile.dart
+      daily_care.dart
+      medicine.dart
+      appointment.dart
+      diary_entry.dart
+      medical_record.dart
     providers/
-    widgets/
+      user_provider.dart
 assets/
   data/
-  animations/
-  images/
-  icons/
-  fonts/
+    pregnancy_weeks.json
 ```
 
 ## Key Logic & Calculations
-- **Pregnancy Calculator:** LMP based (280 days), Ultrasound adjustment, weeks/days/trimester/progress.
-- **Offline-first:** All data in Hive. Images in app-private storage.
+- **Pregnancy Calculator:** LMP based (280 days standard), supports progress %, week/day Breakdown, Trimester boundaries (1-13, 14-26, 27+), and leap year date arithmetic.
+- **Offline-First:** All user details stored locally in Hive boxes initialized via `HiveService`.
+- **Weekly Guide Data:** Loaded via `rootBundle` from `assets/data/pregnancy_weeks.json` into typed `PregnancyWeek` models.
 
-## Dependency Decisions
-- `flutter_riverpod`: State management.
-- `hive_ce`: Modern Hive fork (considering current state of Hive).
-- `intl`: Localization and date formatting.
-- `google_fonts`: Bengali fonts.
-- `lottie`: Animations.
-- `flutter_local_notifications`: Reminders.
-- `image_picker`: Medical records.
-- `path_provider`: File storage.
-- `local_auth`: Biometric lock.
-- `cryptography`: Backup encryption.
+## Unit Testing
+- Unit tests written under `test/unit/pregnancy_calculator_test.dart` for calculations, boundaries, and leap years.
 
 ## Resuming Development
 1. Run `flutter pub get`
-2. Run `dart run build_runner build`
+2. Run `dart run build_runner build --delete-conflicting-outputs`
+3. Run `flutter run`
+
