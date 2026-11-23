@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'core/theme/app_theme.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
-import 'features/dashboard/presentation/dashboard_screen.dart';
+import 'features/navigation/presentation/app_shell.dart';
 import 'shared/providers/user_provider.dart';
 
 class MomAndBabyApp extends ConsumerWidget {
@@ -17,8 +18,7 @@ class MomAndBabyApp extends ConsumerWidget {
       title: 'Mom & Baby',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: hasProfile ? const DashboardScreen() : const OnboardingScreen(),
+      home: hasProfile ? const AppShell() : const OnboardingScreen(),
     );
   }
 }
-
