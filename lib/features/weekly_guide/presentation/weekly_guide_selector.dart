@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../providers/weekly_guide_providers.dart';
 import 'weekly_guide_screen.dart';
 
@@ -22,7 +23,9 @@ class WeeklyGuideSelector extends ConsumerWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => WeeklyGuideScreen(week: week)),
+                MaterialPageRoute(
+                  builder: (_) => WeeklyGuideScreen(week: week),
+                ),
               );
             },
             child: Container(

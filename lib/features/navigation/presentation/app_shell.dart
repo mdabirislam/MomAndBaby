@@ -3,8 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/user_provider.dart';
 import '../../dashboard/presentation/dashboard_screen.dart';
+import '../../appointments/presentation/screens/appointment_list_screen.dart';
+import '../../reminders/presentation/screens/reminder_settings_screen.dart';
+import '../../medical_records/presentation/screens/medical_record_list_screen.dart';
 import '../../dashboard/providers/dashboard_providers.dart';
 import '../../daily_care/presentation/screens/kick_counter_screen.dart';
+import '../../daily_care/presentation/screens/symptom_tracker_screen.dart';
+import '../../daily_care/presentation/widgets/daily_summary_card.dart';
 import '../../daily_care/presentation/widgets/water_tracker_widget.dart';
 import '../../diary/presentation/screens/diary_list_screen.dart';
 import '../../emergency/presentation/emergency_screen.dart';
@@ -101,14 +106,16 @@ class _BabyTab extends ConsumerWidget {
   }
 }
 
-class _CareTab extends StatelessWidget {
+class _CareTab extends ConsumerWidget {
   const _CareTab();
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context, WidgetRef ref) => Scaffold(
     appBar: AppBar(title: const Text('মায়ের যত্ন')),
     body: ListView(
       padding: const EdgeInsets.all(16),
       children: [
+        const DailySummaryCard(),
+        const SizedBox(height: 12),
         const Card(
           child: Padding(
             padding: EdgeInsets.all(16),
@@ -116,6 +123,12 @@ class _CareTab extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12),
+        _SectionCard(
+          icon: Icons.monitor_heart_outlined,
+          title: 'উপসর্গের ডায়েরি',
+          subtitle: 'আজকের অনুভূতি ও অস্বস্তি নথিভুক্ত করুন',
+          onTap: () => _open(context, const SymptomTrackerScreen()),
+        ),
         _SectionCard(
           icon: Icons.medication_outlined,
           title: 'ওষুধের তালিকা',
@@ -131,7 +144,7 @@ class _CareTab extends StatelessWidget {
         const SizedBox(height: 8),
         const _InfoPanel(
           title: 'স্বাস্থ্য সংক্রান্ত সতর্কতা',
-          message: 'এই ট্র্যাকারগুলো ব্যক্তিগত নথি রাখার জন্য; এগুলো চিকিৎসকের পরামর্শ বা জরুরি মূল্যায়নের বিকল্প নয়।',
+          message: 'এই ট্র্যাকারগুলো ব্যক্তিগত তথ্য সংরক্ষণের জন্য। কোনো উপসর্গ গুরুতর বা হঠাৎ শুরু হলে অ্যাপের রেকর্ডের জন্য অপেক্ষা না করে চিকিৎসা নিন। কিক কাউন্ট শিশুর নড়াচড়া কমে যাওয়ার ক্ষেত্রে চিকিৎসা নেওয়া বিলম্বিত করার কারণ নয়।',
         ),
       ],
     ),
@@ -145,26 +158,29 @@ class _PlannerTab extends StatelessWidget {
     appBar: AppBar(title: const Text('পরিকল্পনা')),
     body: ListView(
       padding: const EdgeInsets.all(16),
-      children: const [
+      children: [
         _SectionCard(
           icon: Icons.event_available,
           title: 'ডাক্তারের অ্যাপয়েন্টমেন্ট',
-          subtitle: 'অ্যাপয়েন্টমেন্ট ব্যবস্থাপনা পরবর্তী ধাপে তৈরি হবে',
+          subtitle: 'সময় নির্ধারণ, নোট ও আগাম রিমাইন্ডার',
+          onTap: () => _open(context, const AppointmentListScreen()),
         ),
         _SectionCard(
           icon: Icons.folder_open,
           title: 'মেডিকেল রেকর্ড',
           subtitle: 'রিপোর্ট ও প্রেসক্রিপশন সংরক্ষণ',
+          onTap: () => _open(context, const MedicalRecordListScreen()),
         ),
         _SectionCard(
           icon: Icons.notifications_active_outlined,
-          title: 'রিমাইন্ডার',
-          subtitle: 'নোটিফিকেশন ব্যবস্থা পরবর্তী ধাপে যুক্ত হবে',
+          title: 'রিমাইন্ডার সেটিংস',
+          subtitle: 'পানি পান ও নোটিফিকেশন নিয়ন্ত্রণ',
+          onTap: () => _open(context, const ReminderSettingsScreen()),
         ),
-        SizedBox(height: 8),
-        _InfoPanel(
-          title: 'নির্মাণাধীন',
-          message: 'এই বিভাগের Navigation ও প্রাথমিক কাঠামো তৈরি হয়েছে। Appointment, medical records ও reminder-এর কার্যকর ব্যবস্থা পরবর্তী Feature milestone-এ যুক্ত হবে।',
+        const SizedBox(height: 8),
+        const _InfoPanel(
+          title: 'রিমাইন্ডার সম্পর্কে',
+          message: 'ওষুধের সময় অনুযায়ী, অ্যাপয়েন্টমেন্টের ১ দিন ও ২ ঘণ্টা আগে এবং চালু করলে পানি পান করার স্মরণবার্তা পাওয়া যাবে।',
         ),
       ],
     ),

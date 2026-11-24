@@ -68,17 +68,20 @@ class MedicineLogAdapter extends TypeAdapter<MedicineLog> {
     return MedicineLog(
       medicineId: fields[0] as String,
       takenAt: fields[1] as DateTime,
+      scheduledTime: fields[2] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, MedicineLog obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.medicineId)
       ..writeByte(1)
-      ..write(obj.takenAt);
+      ..write(obj.takenAt)
+      ..writeByte(2)
+      ..write(obj.scheduledTime);
   }
 
   @override

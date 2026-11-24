@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../providers/daily_care_providers.dart';
-import '../../../../shared/models/daily_care.dart';
 
 class KickCounterScreen extends ConsumerStatefulWidget {
   const KickCounterScreen({super.key});
@@ -33,9 +34,11 @@ class _KickCounterScreenState extends ConsumerState<KickCounterScreen> {
     });
   }
 
-  void _stopSession() {
+  Future<void> _stopSession() async {
     if (_count > 0) {
-      ref.read(kickCounterProvider.notifier).saveSession(_count, _duration);
+      await ref
+          .read(kickCounterProvider.notifier)
+          .saveSession(_count, _duration);
     }
     _timer?.cancel();
     setState(() {
@@ -70,10 +73,7 @@ class _KickCounterScreenState extends ConsumerState<KickCounterScreen> {
     final history = ref.watch(kickCounterProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('কিক কাউন্টার'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('কিক কাউন্টার'), centerTitle: true),
       body: Column(
         children: [
           Expanded(
@@ -88,7 +88,11 @@ class _KickCounterScreenState extends ConsumerState<KickCounterScreen> {
                 const SizedBox(height: 20),
                 Text(
                   '$_count',
-                  style: const TextStyle(fontSize: 80, fontWeight: FontWeight.bold, color: Colors.pinkAccent),
+                  style: const TextStyle(
+                    fontSize: 80,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.pinkAccent,
+                  ),
                 ),
                 const Text('টি কিক পাওয়া গেছে', style: TextStyle(fontSize: 18)),
                 const SizedBox(height: 40),
@@ -102,23 +106,40 @@ class _KickCounterScreenState extends ConsumerState<KickCounterScreen> {
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.pinkAccent, width: 2),
                     ),
-                    child: const Icon(Icons.touch_app, size: 60, color: Colors.pinkAccent),
+                    child: const Icon(
+                      Icons.touch_app,
+                      size: 60,
+                      color: Colors.pinkAccent,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
                 if (_isSessionActive)
                   ElevatedButton(
                     onPressed: _stopSession,
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.redAccent),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                    ),
                     child: const Text('সেশন শেষ করুন'),
                   ),
               ],
             ),
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Text(
+              'এটি শুধু সেশন নথিভুক্ত করে; কোনো নির্দিষ্ট কিক সংখ্যা সবার জন্য লক্ষ্য নয়। নড়াচড়া কম মনে হলে দ্রুত চিকিৎসকের সঙ্গে যোগাযোগ করুন।',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+          ),
           const Divider(),
           const Padding(
             padding: EdgeInsets.all(8.0),
-            child: Text('সাম্প্রতিক রেকর্ড', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            child: Text(
+              'সাম্প্রতিক রেকর্ড',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
           ),
           Expanded(
             child: ListView.builder(
@@ -128,7 +149,9 @@ class _KickCounterScreenState extends ConsumerState<KickCounterScreen> {
                 return ListTile(
                   leading: const Icon(Icons.history, color: Colors.grey),
                   title: Text('${session.count} টি কিক'),
-                  subtitle: Text(DateFormat('dd MMM, hh:mm a').format(session.startTime)),
+                  subtitle: Text(
+                    DateFormat('dd MMM, hh:mm a').format(session.startTime),
+                  ),
                   trailing: Text(_formatDuration(session.duration)),
                 );
               },
@@ -139,4 +162,3 @@ class _KickCounterScreenState extends ConsumerState<KickCounterScreen> {
     );
   }
 }
-

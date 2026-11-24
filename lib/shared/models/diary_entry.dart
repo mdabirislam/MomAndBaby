@@ -16,10 +16,15 @@ class DiaryEntry extends HiveObject {
   @HiveField(3)
   String? mood;
 
+  // Appended field: existing Hive field numbers remain unchanged.
+  @HiveField(4)
+  int? pregnancyWeek;
+
   DiaryEntry({
     required this.date,
     required this.content,
     this.imagePaths,
     this.mood,
+    this.pregnancyWeek,
   });
 }

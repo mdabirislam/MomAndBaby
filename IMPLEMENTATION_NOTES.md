@@ -60,6 +60,13 @@ assets/
 - **Offline-First:** All user details stored locally in Hive boxes initialized via `HiveService`.
 - **Weekly Guide Data:** Loaded via `rootBundle` from `assets/data/pregnancy_weeks.json` into typed `PregnancyWeek` models.
 
+## Daily Care Notes
+- Existing Hive type IDs are preserved: WaterLog=1, KickCount=2, SymptomLog=3; existing field indices are unchanged.
+- DailyCareRepository reads and writes the existing waterBox, kickBox, and symptomBox.
+- SymptomLogsNotifier exposes add/delete and sorted history; records contain symptom name, 1–5 subjective severity, timestamp, and optional note.
+- Water tracking records user-entered amounts only; the UI intentionally does not prescribe a universal daily hydration target.
+- Kick sessions are stored as personal observations only; the UI does not set a universal kick-count target and tells users to seek care if movement decreases.
+
 ## Unit Testing
 - Unit tests written under `test/unit/pregnancy_calculator_test.dart` for calculations, boundaries, and leap years.
 

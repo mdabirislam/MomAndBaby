@@ -2,10 +2,6 @@
 
 part of 'diary_entry.dart';
 
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
-
 class DiaryEntryAdapter extends TypeAdapter<DiaryEntry> {
   @override
   final int typeId = 7;
@@ -21,13 +17,14 @@ class DiaryEntryAdapter extends TypeAdapter<DiaryEntry> {
       content: fields[1] as String,
       imagePaths: (fields[2] as List?)?.cast<String>(),
       mood: fields[3] as String?,
+      pregnancyWeek: fields[4] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, DiaryEntry obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.date)
       ..writeByte(1)
@@ -35,7 +32,9 @@ class DiaryEntryAdapter extends TypeAdapter<DiaryEntry> {
       ..writeByte(2)
       ..write(obj.imagePaths)
       ..writeByte(3)
-      ..write(obj.mood);
+      ..write(obj.mood)
+      ..writeByte(4)
+      ..write(obj.pregnancyWeek);
   }
 
   @override

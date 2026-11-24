@@ -1,12 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../data/diary_repository.dart';
+
 import '../../../shared/models/diary_entry.dart';
+import '../data/diary_repository.dart';
 
 final diaryRepositoryProvider = Provider((ref) => DiaryRepository());
 
-final diaryEntriesProvider = StateNotifierProvider<DiaryNotifier, List<DiaryEntry>>((ref) {
-  return DiaryNotifier(ref.watch(diaryRepositoryProvider));
-});
+final diaryEntriesProvider =
+    StateNotifierProvider<DiaryNotifier, List<DiaryEntry>>((ref) {
+      return DiaryNotifier(ref.watch(diaryRepositoryProvider));
+    });
 
 class DiaryNotifier extends StateNotifier<List<DiaryEntry>> {
   final DiaryRepository _repository;
@@ -15,18 +17,33 @@ class DiaryNotifier extends StateNotifier<List<DiaryEntry>> {
     refresh();
   }
 
-  void refresh() {
-    state = _repository.getAllEntries();
-  }
+  void refresh() => state = _repository.getAllEntries();
 
-  Future<void> addEntry(String content, {String? mood}) async {
-    final entry = DiaryEntry(date: DateTime.now(), content: content, mood: mood);
+  Future<void> addEntry(
+    String content, {
+    String? mood,
+    DateTime? date,
+    List<String>? imagePaths,
+    int? pregnancyWeek,
+  }) async {
+    final entry = DiaryEntry(
+      date: date ?? DateTime.now(),
+      content: content,
+      mood: mood,
+      imagePaths: imagePaths,
+      pregnancyWeek: pregnancyWeek,
+    );
     await _repository.addEntry(entry);
     refresh();
   }
 
-  Future<void> deleteEntry(int index) async {
-    await _repository.deleteEntry(index);
+  Future<void> updateEntry(DiaryEntry entry) async {
+    await _repository.updateEntry(entry);
+    refresh();
+  }
+
+  Future<void> deleteEntry(DiaryEntry entry) async {
+    await _repository.deleteEntry(entry);
     refresh();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../shared/models/medical_record.dart';
 import '../data/medical_record_repository.dart';
@@ -26,17 +27,24 @@ class MedicalRecordsNotifier extends StateNotifier<List<MedicalRecord>> {
   Future<void> addRecord(
     String title,
     String category,
-    List<String> filePaths, {
+    List<XFile> pickedImages, {
     String? notes,
   }) async {
+    final savedPaths = await _repository.importPickedImages(pickedImages);
     final record = MedicalRecord(
       title: title,
       date: DateTime.now(),
       category: category,
-      filePaths: filePaths,
+      filePaths: savedPaths,
       notes: notes,
     );
-    await _repository.addRecord(record);
+    try {
+      await _repository.addRecord(record);
+    } catch (_) {
+      // If Hive write fails, do not leave orphaned copies behind.
+      await _repository.deleteImportedFiles(savedPaths);
+      rethrow;
+    }
     refresh();
   }
 
