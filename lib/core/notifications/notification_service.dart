@@ -5,6 +5,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../../core/database/hive_service.dart';
 import '../../shared/models/appointment.dart';
 import '../../shared/models/medicine.dart';
+import '../../shared/models/planner_task.dart';
 
 class NotificationService {
   NotificationService._();
@@ -24,6 +25,13 @@ class NotificationService {
     'appointment_reminders',
     'Appointment reminders',
     channelDescription: 'Upcoming appointment reminders',
+    importance: Importance.high,
+    priority: Priority.high,
+  );
+  static const _taskChannel = AndroidNotificationDetails(
+    'planner_task_reminders',
+    'Planner task reminders',
+    channelDescription: 'Reminders for personal planner tasks',
     importance: Importance.high,
     priority: Priority.high,
   );
@@ -94,6 +102,12 @@ class NotificationService {
     );
     for (final appointment in appointmentBox.values) {
       await scheduleAppointment(appointment);
+    }
+    final taskBox = HiveService.getBox<PlannerTask>(
+      HiveService.plannerTaskBoxName,
+    );
+    for (final task in taskBox.values) {
+      await schedulePlannerTask(task);
     }
   }
 
@@ -215,6 +229,37 @@ class NotificationService {
     final id = 500000 + (_stableId('appointment:${appointment.key}') % 400000);
     await _plugin.cancel(id);
     await _plugin.cancel(id + 1);
+  }
+
+  Future<void> schedulePlannerTask(PlannerTask task) async {
+    await initialize();
+    if (task.key == null) return;
+    final id = 800000 + (_stableId('planner:${task.key}') % 100000);
+    await _plugin.cancel(id);
+    final reminder = task.reminderAt;
+    if (task.isCompleted ||
+        reminder == null ||
+        !reminder.isAfter(DateTime.now())) {
+      return;
+    }
+    if (!await _hasSchedulingPermission()) return;
+    await _plugin.zonedSchedule(
+      id,
+      'পরিকল্পনার রিমাইন্ডার',
+      task.title,
+      tz.TZDateTime.from(reminder, tz.local),
+      const NotificationDetails(android: _taskChannel),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+  }
+
+  Future<void> cancelPlannerTask(PlannerTask task) async {
+    await initialize();
+    if (task.key == null) return;
+    final id = 800000 + (_stableId('planner:${task.key}') % 100000);
+    await _plugin.cancel(id);
   }
 
   Future<void> setWaterReminders(bool enabled) async {

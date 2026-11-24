@@ -1,10 +1,13 @@
 import 'package:hive_flutter/hive_flutter.dart';
+
 import '../../shared/models/user_profile.dart';
 import '../../shared/models/daily_care.dart';
 import '../../shared/models/medicine.dart';
 import '../../shared/models/appointment.dart';
 import '../../shared/models/diary_entry.dart';
 import '../../shared/models/medical_record.dart';
+import '../../shared/models/planner_task.dart';
+import '../../shared/models/companion_note.dart';
 
 class HiveService {
   static const String profileBoxName = 'profileBox';
@@ -16,6 +19,8 @@ class HiveService {
   static const String appointmentBoxName = 'appointmentBox';
   static const String diaryBoxName = 'diaryBox';
   static const String medicalRecordBoxName = 'medicalRecordBox';
+  static const String plannerTaskBoxName = 'plannerTaskBox';
+  static const String companionNoteBoxName = 'companionNoteBox';
 
   static Future<void> init() async {
     await Hive.initFlutter();
@@ -30,6 +35,8 @@ class HiveService {
     Hive.registerAdapter(AppointmentAdapter());
     Hive.registerAdapter(DiaryEntryAdapter());
     Hive.registerAdapter(MedicalRecordAdapter());
+    Hive.registerAdapter(PlannerTaskAdapter());
+    Hive.registerAdapter(CompanionNoteAdapter());
 
     // Open Boxes
     await Hive.openBox<UserProfile>(profileBoxName);
@@ -41,6 +48,8 @@ class HiveService {
     await Hive.openBox<Appointment>(appointmentBoxName);
     await Hive.openBox<DiaryEntry>(diaryBoxName);
     await Hive.openBox<MedicalRecord>(medicalRecordBoxName);
+    await Hive.openBox<PlannerTask>(plannerTaskBoxName);
+    await Hive.openBox<CompanionNote>(companionNoteBoxName);
   }
 
   static Box<T> getBox<T>(String name) {

@@ -3,9 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/providers/user_provider.dart';
 import '../../dashboard/presentation/dashboard_screen.dart';
-import '../../appointments/presentation/screens/appointment_list_screen.dart';
-import '../../reminders/presentation/screens/reminder_settings_screen.dart';
-import '../../medical_records/presentation/screens/medical_record_list_screen.dart';
 import '../../dashboard/providers/dashboard_providers.dart';
 import '../../daily_care/presentation/screens/kick_counter_screen.dart';
 import '../../daily_care/presentation/screens/symptom_tracker_screen.dart';
@@ -15,6 +12,8 @@ import '../../diary/presentation/screens/diary_list_screen.dart';
 import '../../emergency/presentation/emergency_screen.dart';
 import '../../medicines/presentation/screens/medicine_list_screen.dart';
 import '../../weekly_guide/presentation/weekly_guide_screen.dart';
+import '../../planner/presentation/screens/planner_screen.dart';
+import '../../companion/presentation/screens/our_space_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -30,7 +29,7 @@ class _AppShellState extends State<AppShell> {
     DashboardScreen(),
     _BabyTab(),
     _CareTab(),
-    _PlannerTab(),
+    PlannerScreen(),
     _MoreTab(),
   ];
 
@@ -151,42 +150,6 @@ class _CareTab extends ConsumerWidget {
   );
 }
 
-class _PlannerTab extends StatelessWidget {
-  const _PlannerTab();
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('পরিকল্পনা')),
-    body: ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        _SectionCard(
-          icon: Icons.event_available,
-          title: 'ডাক্তারের অ্যাপয়েন্টমেন্ট',
-          subtitle: 'সময় নির্ধারণ, নোট ও আগাম রিমাইন্ডার',
-          onTap: () => _open(context, const AppointmentListScreen()),
-        ),
-        _SectionCard(
-          icon: Icons.folder_open,
-          title: 'মেডিকেল রেকর্ড',
-          subtitle: 'রিপোর্ট ও প্রেসক্রিপশন সংরক্ষণ',
-          onTap: () => _open(context, const MedicalRecordListScreen()),
-        ),
-        _SectionCard(
-          icon: Icons.notifications_active_outlined,
-          title: 'রিমাইন্ডার সেটিংস',
-          subtitle: 'পানি পান ও নোটিফিকেশন নিয়ন্ত্রণ',
-          onTap: () => _open(context, const ReminderSettingsScreen()),
-        ),
-        const SizedBox(height: 8),
-        const _InfoPanel(
-          title: 'রিমাইন্ডার সম্পর্কে',
-          message: 'ওষুধের সময় অনুযায়ী, অ্যাপয়েন্টমেন্টের ১ দিন ও ২ ঘণ্টা আগে এবং চালু করলে পানি পান করার স্মরণবার্তা পাওয়া যাবে।',
-        ),
-      ],
-    ),
-  );
-}
-
 class _MoreTab extends ConsumerWidget {
   const _MoreTab();
   @override
@@ -214,10 +177,11 @@ class _MoreTab extends ConsumerWidget {
             title: 'জরুরি যোগাযোগ',
             onTap: () => _open(context, const EmergencyScreen()),
           ),
-          const _MenuTile(
+          _MenuTile(
             icon: Icons.people_outline,
             title: 'Our Space',
-            subtitle: 'পরবর্তী ধাপে যুক্ত হবে',
+            subtitle: 'একসাথে কথা, যত্ন ও ছোট পরিকল্পনা',
+            onTap: () => _open(context, const OurSpaceScreen()),
           ),
           const _MenuTile(
             icon: Icons.settings_outlined,
