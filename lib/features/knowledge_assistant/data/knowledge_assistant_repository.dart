@@ -250,12 +250,9 @@ class KnowledgeAssistantRepository {
     'to',
     'for',
     'হচ্ছে',
-    'হচ্ছে',
     'হয়েছে',
-    'হয়',
     'করে',
     'করতে',
     'আমাকে',
-    'আমার',
   };
 }
