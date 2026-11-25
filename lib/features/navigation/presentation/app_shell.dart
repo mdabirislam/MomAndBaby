@@ -14,6 +14,7 @@ import '../../medicines/presentation/screens/medicine_list_screen.dart';
 import '../../weekly_guide/presentation/weekly_guide_screen.dart';
 import '../../planner/presentation/screens/planner_screen.dart';
 import '../../companion/presentation/screens/our_space_screen.dart';
+import '../../knowledge_assistant/presentation/knowledge_assistant_screen.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -166,6 +167,12 @@ class _MoreTab extends ConsumerWidget {
               title: Text(profile?.name ?? 'ব্যবহারকারী'),
               subtitle: const Text('Mom & Baby প্রোফাইল'),
             ),
+          ),
+          _MenuTile(
+            icon: Icons.auto_awesome_outlined,
+            title: 'জ্ঞান সহায়ক',
+            subtitle: 'অফলাইনে গর্ভাবস্থার তথ্য খুঁজুন',
+            onTap: () => _open(context, const KnowledgeAssistantScreen()),
           ),
           _MenuTile(
             icon: Icons.menu_book_outlined,
