@@ -15,7 +15,7 @@ class MomAndBabyApp extends ConsumerWidget {
     final hasProfile = profile != null;
 
     return MaterialApp(
-      title: 'Mom & Baby',
+      title: 'মায়ের যত্ন',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       home: hasProfile ? const AppShell() : const OnboardingScreen(),
