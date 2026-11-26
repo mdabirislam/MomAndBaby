@@ -1,17 +1,18 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import '../constants/colors.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
+      scaffoldBackgroundColor: AppColors.warmCream,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primaryPink,
         primary: AppColors.accentPink,
         secondary: AppColors.secondaryPeach,
         surface: AppColors.white,
-        background: AppColors.warmCream,
       ),
       textTheme: GoogleFonts.hindSiliguriTextTheme().copyWith(
         displayLarge: GoogleFonts.hindSiliguri(
@@ -36,9 +37,7 @@ class AppTheme {
       cardTheme: CardThemeData(
         elevation: 2,
         shadowColor: Colors.black12,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         color: AppColors.white,
       ),
       appBarTheme: AppBarTheme(

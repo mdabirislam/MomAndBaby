@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -154,15 +154,16 @@ class _DiaryListScreenState extends ConsumerState<DiaryListScreen> {
                         firstDate: DateTime(2000),
                         lastDate: DateTime.now(),
                       );
-                      if (date != null)
+                      if (date != null) {
                         setDialogState(() => selectedDate = date);
+                      }
                     },
                     icon: const Icon(Icons.calendar_month),
                     label: Text(DateFormat('dd MMM yyyy').format(selectedDate)),
                   ),
                   const SizedBox(height: 10),
                   DropdownButtonFormField<String>(
-                    value: selectedMood,
+                    initialValue: selectedMood,
                     decoration: const InputDecoration(
                       labelText: 'আজকের অনুভূতি',
                     ),
@@ -235,7 +236,7 @@ class _DiaryListScreenState extends ConsumerState<DiaryListScreen> {
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: imagePaths.length,
-                        separatorBuilder: (_, __) => const SizedBox(width: 8),
+                        separatorBuilder: (_, _) => const SizedBox(width: 8),
                         itemBuilder: (context, index) => Stack(
                           children: [
                             ClipRRect(
@@ -245,7 +246,7 @@ class _DiaryListScreenState extends ConsumerState<DiaryListScreen> {
                                 width: 76,
                                 height: 76,
                                 fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) => const SizedBox(
+                                errorBuilder: (_, _, _) => const SizedBox(
                                   width: 76,
                                   height: 76,
                                   child: Icon(Icons.broken_image),
@@ -445,7 +446,7 @@ class _DiaryCard extends StatelessWidget {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: images.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 8),
+                  separatorBuilder: (_, _) => const SizedBox(width: 8),
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () => showDialog<void>(
                       context: context,
@@ -465,7 +466,7 @@ class _DiaryCard extends StatelessWidget {
                         width: 120,
                         height: 104,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const SizedBox(
+                        errorBuilder: (_, _, _) => const SizedBox(
                           width: 120,
                           child: Icon(Icons.broken_image_outlined),
                         ),

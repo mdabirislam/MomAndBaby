@@ -1,10 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../core/database/hive_service.dart';
 import '../../shared/models/user_profile.dart';
 
-final userProfileProvider = StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
-  return UserProfileNotifier();
-});
+final userProfileProvider =
+    StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
+      return UserProfileNotifier();
+    });
 
 class UserProfileNotifier extends StateNotifier<UserProfile?> {
   UserProfileNotifier() : super(null) {
@@ -34,4 +36,3 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     state = profile;
   }
 }
-

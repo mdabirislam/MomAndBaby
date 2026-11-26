@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
 import '../../../shared/models/user_profile.dart';
 import '../../../shared/providers/user_provider.dart';
 import '../../../core/constants/colors.dart';
@@ -58,7 +59,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       }
     } else if (_selectedLmp == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('অনুগ্রহ করে শেষ মাসিকের তারিখ নির্বাচন করুন')),
+        const SnackBar(
+          content: Text('অনুগ্রহ করে শেষ মাসিকের তারিখ নির্বাচন করুন'),
+        ),
       );
     }
   }
@@ -67,9 +70,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppColors.pinkGradient,
-        ),
+        decoration: const BoxDecoration(gradient: AppColors.pinkGradient),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -105,7 +106,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            prefixIcon: const Icon(Icons.person, color: AppColors.accentPink),
+                            prefixIcon: const Icon(
+                              Icons.person,
+                              color: AppColors.accentPink,
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -118,21 +122,30 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         InkWell(
                           onTap: () => _selectDate(context),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 15,
+                              horizontal: 10,
+                            ),
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.calendar_today, color: AppColors.accentPink),
+                                const Icon(
+                                  Icons.calendar_today,
+                                  color: AppColors.accentPink,
+                                ),
                                 const SizedBox(width: 10),
                                 Text(
                                   _selectedLmp == null
                                       ? 'শেষ মাসিকের তারিখ (LMP)'
-                                      : DateFormat('dd MMMM, yyyy').format(_selectedLmp!),
+                                      : DateFormat('dd MMMM, yyyy')
+                                            .format(_selectedLmp!),
                                   style: TextStyle(
-                                    color: _selectedLmp == null ? AppColors.textLight : AppColors.textDark,
+                                    color: _selectedLmp == null
+                                        ? AppColors.textLight
+                                        : AppColors.textDark,
                                   ),
                                 ),
                               ],

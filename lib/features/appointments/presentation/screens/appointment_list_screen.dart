@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -29,8 +29,9 @@ class _AppointmentListScreenState extends State<AppointmentListScreen> {
     final notes = TextEditingController(text: appointment?.notes ?? '');
     var dateTime =
         appointment?.dateTime ?? DateTime.now().add(const Duration(days: 1));
-    if (!dateTime.isAfter(DateTime.now()))
+    if (!dateTime.isAfter(DateTime.now())) {
       dateTime = DateTime.now().add(const Duration(hours: 2));
+    }
 
     final saved = await showDialog<bool>(
       context: context,

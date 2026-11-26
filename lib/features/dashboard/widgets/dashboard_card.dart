@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class DashboardCard extends StatelessWidget {
   final String title;
@@ -26,10 +26,8 @@ class DashboardCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleLarge
+                    ?.copyWith(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               child,

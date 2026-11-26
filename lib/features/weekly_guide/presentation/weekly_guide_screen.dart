@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -218,7 +218,7 @@ class _WeeklyGuideScreenState extends ConsumerState<WeeklyGuideScreen> {
               const SizedBox(width: 8),
               Expanded(
                 child: DropdownButtonFormField<int>(
-                  value: _selectedWeek,
+                  initialValue: _selectedWeek,
                   isExpanded: true,
                   decoration: InputDecoration(
                     filled: true,

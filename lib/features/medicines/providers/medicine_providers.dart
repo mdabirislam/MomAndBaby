@@ -71,8 +71,9 @@ class MedicineLogsNotifier extends StateNotifier<List<MedicineLog>> {
       medicineId: medicineId,
       date: DateTime.now(),
       scheduledTime: scheduledTime,
-    ))
+    )) {
       return;
+    }
     await _repository.logMedicineTaken(
       medicineId: medicineId,
       scheduledTime: scheduledTime,

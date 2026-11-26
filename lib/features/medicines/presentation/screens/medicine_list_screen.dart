@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -179,8 +179,9 @@ class MedicineListScreen extends ConsumerWidget {
                           context: context,
                           initialTime: times[i],
                         );
-                        if (picked != null)
+                        if (picked != null) {
                           setDialogState(() => times[i] = picked);
+                        }
                       },
                     ),
                   TextButton.icon(
@@ -191,8 +192,9 @@ class MedicineListScreen extends ConsumerWidget {
                               context: context,
                               initialTime: TimeOfDay.now(),
                             );
-                            if (picked != null)
+                            if (picked != null) {
                               setDialogState(() => times.add(picked));
+                            }
                           },
                     icon: const Icon(Icons.add),
                     label: const Text('আরেকটি সময় যোগ করুন'),
@@ -210,8 +212,9 @@ class MedicineListScreen extends ConsumerWidget {
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
                       );
-                      if (picked != null)
+                      if (picked != null) {
                         setDialogState(() => startDate = picked);
+                      }
                     },
                   ),
                   ListTile(
@@ -241,8 +244,9 @@ class MedicineListScreen extends ConsumerWidget {
                         firstDate: startDate,
                         lastDate: DateTime(2100),
                       );
-                      if (picked != null)
+                      if (picked != null) {
                         setDialogState(() => endDate = picked);
+                      }
                     },
                   ),
                   const Text(
@@ -262,8 +266,9 @@ class MedicineListScreen extends ConsumerWidget {
               onPressed: () {
                 if (nameController.text.trim().isEmpty ||
                     times.isEmpty ||
-                    (endDate != null && endDate!.isBefore(startDate)))
+                    (endDate != null && endDate!.isBefore(startDate))) {
                   return;
+                }
                 Navigator.pop(dialogContext, true);
               },
               child: const Text('সংরক্ষণ'),

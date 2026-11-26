@@ -1,16 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../providers/weekly_guide_providers.dart';
 import 'weekly_guide_screen.dart';
 
-class WeeklyGuideSelector extends ConsumerWidget {
+class WeeklyGuideSelector extends StatelessWidget {
   final int currentWeek;
 
   const WeeklyGuideSelector({super.key, required this.currentWeek});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SizedBox(
       height: 100,
       child: ListView.builder(

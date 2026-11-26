@@ -17,16 +17,20 @@ void main() {
 
     test('Trimester Boundaries', () {
       final lmp = DateTime.now();
-      
+
       // Week 1 -> Trimester 1
       expect(PregnancyCalculator.currentTrimester(lmp), 1);
-      
+
       // Week 14 -> Trimester 2
-      final lmpTrimester2 = DateTime.now().subtract(const Duration(days: 14 * 7));
+      final lmpTrimester2 = DateTime.now().subtract(
+        const Duration(days: 14 * 7),
+      );
       expect(PregnancyCalculator.currentTrimester(lmpTrimester2), 2);
-      
+
       // Week 28 -> Trimester 3
-      final lmpTrimester3 = DateTime.now().subtract(const Duration(days: 28 * 7));
+      final lmpTrimester3 = DateTime.now().subtract(
+        const Duration(days: 28 * 7),
+      );
       expect(PregnancyCalculator.currentTrimester(lmpTrimester3), 3);
     });
 

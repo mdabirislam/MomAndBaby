@@ -29,10 +29,7 @@ class PregnancyCalculator {
   /// Returns total weeks and days as a map
   static Map<String, int> getWeeksAndDays(DateTime lmp) {
     final days = calculateGestationalDays(lmp);
-    return {
-      'weeks': (days / 7).floor(),
-      'days': days % 7,
-    };
+    return {'weeks': (days / 7).floor(), 'days': days % 7};
   }
 
   /// Returns current trimester (1, 2, or 3)

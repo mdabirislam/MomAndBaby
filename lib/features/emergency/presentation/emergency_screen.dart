@@ -1,16 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../shared/providers/user_provider.dart';
 
 class EmergencyScreen extends ConsumerWidget {
   const EmergencyScreen({super.key});
 
   Future<void> _makeCall(String phoneNumber) async {
-    final Uri launchUri = Uri(
-      scheme: 'tel',
-      path: phoneNumber,
-    );
+    final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
     if (await canLaunchUrl(launchUri)) {
       await launchUrl(launchUri);
     }
@@ -30,7 +28,11 @@ class EmergencyScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: [
-            const Icon(Icons.emergency_share, size: 80, color: Colors.redAccent),
+            const Icon(
+              Icons.emergency_share,
+              size: 80,
+              color: Colors.redAccent,
+            ),
             const SizedBox(height: 20),
             const Text(
               'যেকোনো জরুরি প্রয়োজনে আপনার চিকিৎসক বা পরিবারকে কল করুন।',
@@ -67,7 +69,10 @@ class EmergencyScreen extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         'তীব্র রক্তপাত, প্রচণ্ড পেট ব্যথা বা পানি ভাঙলে দেরি না করে হাসপাতালে যান।',
-                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -92,7 +97,10 @@ class EmergencyScreen extends ConsumerWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 10,
+        ),
         leading: CircleAvatar(
           backgroundColor: color,
           child: Icon(icon, color: Colors.black87),

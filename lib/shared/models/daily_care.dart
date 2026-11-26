@@ -24,7 +24,11 @@ class KickCount extends HiveObject {
   @HiveField(2)
   Duration duration;
 
-  KickCount({required this.startTime, required this.count, required this.duration});
+  KickCount({
+    required this.startTime,
+    required this.count,
+    required this.duration,
+  });
 }
 
 @HiveType(typeId: 3)

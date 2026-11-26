@@ -16,10 +16,7 @@ class WaterLogAdapter extends TypeAdapter<WaterLog> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return WaterLog(
-      date: fields[0] as DateTime,
-      amountMl: fields[1] as int,
-    );
+    return WaterLog(date: fields[0] as DateTime, amountMl: fields[1] as int);
   }
 
   @override
