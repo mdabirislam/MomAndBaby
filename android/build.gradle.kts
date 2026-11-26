@@ -5,14 +5,11 @@ allprojects {
     }
 }
 
-val newBuildDir: Directory =
-    rootProject.layout.buildDirectory
-        .dir("../../build")
-        .get()
+val newBuildDir: Provider<Directory> = rootProject.layout.dir(provider { File("C:/flutter_builds/pregnancy_care") })
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
-    val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
+    val newSubprojectBuildDir: Provider<Directory> = newBuildDir.map { it.dir(project.name) }
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 subprojects {
