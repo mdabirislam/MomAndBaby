@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -88,26 +89,30 @@ class NotificationService {
   }
 
   Future<void> rescheduleAll() async {
-    await initialize();
-    if (!await _hasSchedulingPermission()) return;
-    final medicineBox = HiveService.getBox<Medicine>(
-      HiveService.medicineBoxName,
-    );
-    for (final medicine in medicineBox.values) {
-      await scheduleMedicine(medicine);
-    }
+    try {
+      await initialize();
+      if (!await _checkNotificationPermission()) return;
+      final medicineBox = HiveService.getBox<Medicine>(
+        HiveService.medicineBoxName,
+      );
+      for (final medicine in medicineBox.values) {
+        await scheduleMedicine(medicine);
+      }
 
-    final appointmentBox = HiveService.getBox<Appointment>(
-      HiveService.appointmentBoxName,
-    );
-    for (final appointment in appointmentBox.values) {
-      await scheduleAppointment(appointment);
-    }
-    final taskBox = HiveService.getBox<PlannerTask>(
-      HiveService.plannerTaskBoxName,
-    );
-    for (final task in taskBox.values) {
-      await schedulePlannerTask(task);
+      final appointmentBox = HiveService.getBox<Appointment>(
+        HiveService.appointmentBoxName,
+      );
+      for (final appointment in appointmentBox.values) {
+        await scheduleAppointment(appointment);
+      }
+      final taskBox = HiveService.getBox<PlannerTask>(
+        HiveService.plannerTaskBoxName,
+      );
+      for (final task in taskBox.values) {
+        await schedulePlannerTask(task);
+      }
+    } catch (e) {
+      debugPrint('Error rescheduling notifications: $e');
     }
   }
 
@@ -122,7 +127,8 @@ class NotificationService {
       }
     }
     if (!medicine.isActive || medicine.reminderTimes.isEmpty) return;
-    if (!await _hasSchedulingPermission()) return;
+    if (!await _checkNotificationPermission()) return;
+    final scheduleMode = await _getAndroidScheduleMode();
 
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -163,7 +169,7 @@ class NotificationService {
           '${medicine.name}${medicine.dosage.isEmpty ? '' : ' — ${medicine.dosage}'}',
           tz.TZDateTime.from(scheduled, tz.local),
           const NotificationDetails(android: _medicineChannel),
-          androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          androidScheduleMode: scheduleMode,
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime,
         );
@@ -188,11 +194,12 @@ class NotificationService {
         500000 + (_stableId('appointment:${appointment.key}') % 400000);
     await _plugin.cancel(baseId);
     await _plugin.cancel(baseId + 1);
-    if (!await _hasSchedulingPermission()) return;
+    if (!await _checkNotificationPermission()) return;
     if (appointment.isCompleted ||
         !appointment.dateTime.isAfter(DateTime.now())) {
       return;
     }
+    final scheduleMode = await _getAndroidScheduleMode();
     final oneDayBefore = appointment.dateTime.subtract(const Duration(days: 1));
     final twoHoursBefore = appointment.dateTime.subtract(
       const Duration(hours: 2),
@@ -204,7 +211,7 @@ class NotificationService {
         appointment.title,
         tz.TZDateTime.from(oneDayBefore, tz.local),
         const NotificationDetails(android: _appointmentChannel),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: scheduleMode,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );
@@ -216,7 +223,7 @@ class NotificationService {
         appointment.title,
         tz.TZDateTime.from(twoHoursBefore, tz.local),
         const NotificationDetails(android: _appointmentChannel),
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: scheduleMode,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );
@@ -242,14 +249,15 @@ class NotificationService {
         !reminder.isAfter(DateTime.now())) {
       return;
     }
-    if (!await _hasSchedulingPermission()) return;
+    if (!await _checkNotificationPermission()) return;
+    final scheduleMode = await _getAndroidScheduleMode();
     await _plugin.zonedSchedule(
       id,
       'পরিকল্পনার রিমাইন্ডার',
       task.title,
       tz.TZDateTime.from(reminder, tz.local),
       const NotificationDetails(android: _taskChannel),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      androidScheduleMode: scheduleMode,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
     );
@@ -298,17 +306,25 @@ class NotificationService {
     return await android.areNotificationsEnabled() ?? true;
   }
 
-  Future<bool> _hasSchedulingPermission() async {
-    if (_permissionGrantedThisSession) return true;
+  Future<bool> _checkNotificationPermission() async {
     final android = _plugin
         .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin
         >();
     if (android == null) return true;
-    final notificationsEnabled =
-        await android.areNotificationsEnabled() ?? true;
+    return await android.areNotificationsEnabled() ?? true;
+  }
+
+  Future<AndroidScheduleMode> _getAndroidScheduleMode() async {
+    final android = _plugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >();
+    if (android == null) return AndroidScheduleMode.exactAllowWhileIdle;
     final exactAllowed = await android.canScheduleExactNotifications() ?? true;
-    return notificationsEnabled && exactAllowed;
+    return exactAllowed
+        ? AndroidScheduleMode.exactAllowWhileIdle
+        : AndroidScheduleMode.inexactAllowWhileIdle;
   }
 
   int _medicineId(Object key, int day, int slot) =>

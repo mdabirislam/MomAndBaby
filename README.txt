@@ -1,21 +1,15 @@
-Mom & Baby — Pregnancy Memory Journal patch
+Mom & Baby - Android startup crash diagnostic patch
 
-Apply: extract this ZIP into the Flutter project root (H:\ABIR\dart project\pregnancy_care), preserving folders and replacing files.
+Replace your project's pubspec.yaml with the included pubspec.yaml.
+This removes the unused home_widget dependency. The uploaded project
+has no Dart references to HomeWidget, while this dependency brings
+Jetpack Glance/AndroidX WorkManager into the Android app. The crash
+log shows WorkManager's WorkDatabase failing during AndroidX Startup.
 
-Features:
-- Create and edit diary memories
-- Mood selection and optional pregnancy-week label (1–42)
-- Add multiple photos from gallery or camera; photos are copied into app-private documents storage
-- Remove photos while editing; clean up removed/abandoned image files
-- Search diary text/mood and filter by mood
-- Delete diary entries with confirmation
-- Existing DiaryEntry Hive typeId 7 and field indexes 0–3 are preserved; pregnancyWeek is appended as field 4
-- Repository update/delete now use the Hive object itself, avoiding sorted-list index mismatch
-
-After applying, run from project root:
+Then run from the project root:
   flutter pub get
-  dart format lib\shared\models\diary_entry.dart lib\shared\models\diary_entry.g.dart lib\features\diary
-  flutter analyze
-  flutter test
+  flutter clean
+  flutter build apk --release
 
-No new package dependency is required; image_picker and path_provider are already in pubspec.yaml.
+This patch changes only pubspec.yaml. Keep a backup of your current
+pubspec.yaml before replacing it. No app data on the phone is touched.

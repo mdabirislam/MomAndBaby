@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../shared/models/user_profile.dart';
@@ -23,33 +24,43 @@ class HiveService {
   static const String companionNoteBoxName = 'companionNoteBox';
 
   static Future<void> init() async {
-    await Hive.initFlutter();
+    try {
+      await Hive.initFlutter();
 
-    // Register Adapters
-    Hive.registerAdapter(UserProfileAdapter());
-    Hive.registerAdapter(WaterLogAdapter());
-    Hive.registerAdapter(KickCountAdapter());
-    Hive.registerAdapter(SymptomLogAdapter());
-    Hive.registerAdapter(MedicineAdapter());
-    Hive.registerAdapter(MedicineLogAdapter());
-    Hive.registerAdapter(AppointmentAdapter());
-    Hive.registerAdapter(DiaryEntryAdapter());
-    Hive.registerAdapter(MedicalRecordAdapter());
-    Hive.registerAdapter(PlannerTaskAdapter());
-    Hive.registerAdapter(CompanionNoteAdapter());
+      // Register Adapters
+      Hive.registerAdapter(UserProfileAdapter());
+      Hive.registerAdapter(WaterLogAdapter());
+      Hive.registerAdapter(KickCountAdapter());
+      Hive.registerAdapter(SymptomLogAdapter());
+      Hive.registerAdapter(MedicineAdapter());
+      Hive.registerAdapter(MedicineLogAdapter());
+      Hive.registerAdapter(AppointmentAdapter());
+      Hive.registerAdapter(DiaryEntryAdapter());
+      Hive.registerAdapter(MedicalRecordAdapter());
+      Hive.registerAdapter(PlannerTaskAdapter());
+      Hive.registerAdapter(CompanionNoteAdapter());
 
-    // Open Boxes
-    await Hive.openBox<UserProfile>(profileBoxName);
-    await Hive.openBox<WaterLog>(waterBoxName);
-    await Hive.openBox<KickCount>(kickBoxName);
-    await Hive.openBox<SymptomLog>(symptomBoxName);
-    await Hive.openBox<Medicine>(medicineBoxName);
-    await Hive.openBox<MedicineLog>(medicineLogBoxName);
-    await Hive.openBox<Appointment>(appointmentBoxName);
-    await Hive.openBox<DiaryEntry>(diaryBoxName);
-    await Hive.openBox<MedicalRecord>(medicalRecordBoxName);
-    await Hive.openBox<PlannerTask>(plannerTaskBoxName);
-    await Hive.openBox<CompanionNote>(companionNoteBoxName);
+      // Open Boxes
+      await Future.wait([
+        Hive.openBox<UserProfile>(profileBoxName),
+        Hive.openBox<WaterLog>(waterBoxName),
+        Hive.openBox<KickCount>(kickBoxName),
+        Hive.openBox<SymptomLog>(symptomBoxName),
+        Hive.openBox<Medicine>(medicineBoxName),
+        Hive.openBox<MedicineLog>(medicineLogBoxName),
+        Hive.openBox<Appointment>(appointmentBoxName),
+        Hive.openBox<DiaryEntry>(diaryBoxName),
+        Hive.openBox<MedicalRecord>(medicalRecordBoxName),
+        Hive.openBox<PlannerTask>(plannerTaskBoxName),
+        Hive.openBox<CompanionNote>(companionNoteBoxName),
+      ]);
+    } catch (e) {
+      debugPrint('Error initializing Hive: $e');
+    }
+  }
+
+  static Future<void> clearAll() async {
+    await Hive.deleteFromDisk();
   }
 
   static Box<T> getBox<T>(String name) {
